@@ -3,7 +3,7 @@ function [TN,e]=tencom_TV(y,u,r,init,Kn,idf,lambda,varargin)
 % -------------
 % Tensor completion given the inputs, outputs, TT-ranks, TT initialization, 
 % coordinate of known entries, dimensions identifier, and TV term parameter 
-% lamda with scalar outputs
+% lambda with scalar outputs
 %
 % y         =   Outputs,
 %

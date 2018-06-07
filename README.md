@@ -37,15 +37,15 @@ Tensor completion given the inputs, outputs, TT-ranks, and TT initialization wit
 
 * [TN,e]=tencom_TV(y,u,r,init,Kn,idf,lamda,varargin)
 
-Tensor completion given the inputs, outputs, TT-ranks, TT initialization, coordinate of known entries, dimensions identifier, and TV term parameter lamda with scalar outputs.
+Tensor completion given the inputs, outputs, TT-ranks, TT initialization, coordinate of known entries, dimensions identifier, and TV term parameter lambda with scalar outputs.
 
 * TN=VecOtencom(y,u,r,init,varargin)
 
-Tensor completion given the inputs, outputs, TT-ranks, and TT initialization with vector outputs
+Tensor completion given the inputs, outputs, TT-ranks, and TT initialization with vector outputs.
 
 * [TN,e]=VecOtencom_TV(y,u,r,init,Kn,idf,lamda,varargin)
 
-Tensor completion given the inputs, outputs, TT-ranks, TT initialization,  coordinate of known entries, dimensions identifier, and TV term parameter lamda with vector outputs
+Tensor completion given the inputs, outputs, TT-ranks, TT initialization,  coordinate of known entries, dimensions identifier, and TV term parameter lambda with vector outputs.
 
 2. Reference
 ------------

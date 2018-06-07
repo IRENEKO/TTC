@@ -21,6 +21,8 @@ A=reshape(data,[prod(szo(1:2)),szo(3)]);
 A(mi,:)=0;
 A=reshape(A,szo);
 d=length(n);
+
+% For images
 r=[R2,R*ones(1,d-4),Rd,3];
 
 

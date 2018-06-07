@@ -3,7 +3,7 @@ function [TN,e]=VecOtencom_TV(y,u,r,init,Kn,idf,lamda,varargin)
 % -------------
 % Tensor completion given the inputs, outputs, TT-ranks, TT initialization, 
 % coordinate of known entries, dimensions identifier, and TV term parameter 
-% lamda with vector outputs
+% lambda with vector outputs
 %
 % y         =   Outputs,
 %
