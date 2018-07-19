@@ -1,4 +1,4 @@
-function [TN,e]=VecOtencom_TV(y,u,r,init,Kn,idf,lamda,varargin)
+function [TN,e]=VecOtencom_TV(y,u,r,init,Kn,idf,lambda,varargin)
 % [TN,e]=VecOtencom_TV(y,u,r,init,Kn,idf,lamda,varargin)
 % -------------
 % Tensor completion given the inputs, outputs, TT-ranks, TT initialization, 
@@ -93,7 +93,7 @@ for i=d:-1:2
     Vp{i-1}=dotkron(Vp{i},u{i})*reshape(permute(TN.core{i},[3 2 1]),[r(i+1)*n(i),r(i)]); 
 end
 
-% for first lamda term 
+% for first lambda term 
 % Dm and Dp are dofferent from Vm and Vp because they're already ans'*ans
 for j=d:-1:idf(2)
     Dp{1}{j-1}=eye(r(j));
@@ -110,7 +110,7 @@ for j=idf(2)-2:-1:2
 end
 
 
-% for second lamda term 
+% for second lambda term 
 sz=size(D{2}{d});
 Dp{2}{d-1}=reshape(permute(D{2}{d},[1,3,2]),[sz(1)*sz(3),sz(2)])*reshape(permute(TN.core{d},[2,1,3]),[n(d),r(d)*r(d+1)]);
 temp=reshape(permute(reshape(Dp{2}{d-1},[sz(1),sz(3),r(d),r(d+1)]),[2,4,1,3]),[sz(3)*r(d+1),sz(1)*r(d)]);
@@ -142,8 +142,8 @@ while itr<2 ||  (itr < MAXITR )
         itr=itr+1;
         temp=contract(TN);
         temp=temp(:);
-        e(itr)=norm(y-temp(Kn))/norm(y);
-        lamda=lamda*e(itr);
+        e(itr)=norm(y(:)-temp(Kn))/norm(y(:));
+        lambda=lambda*e(itr);
     end    
 end  
 
@@ -171,40 +171,40 @@ end
             sz2=[sz2,1];            
         end
         if sweepindex==1
-            % first lamda
+            % first lambda
             down=reshape(permute(reshape(Dp{1}{sweepindex},[sz1(4),r(sweepindex+1),sz1(4),r(sweepindex+1)]),[1,3,2,4]),[(sz1(4))^2,(r(sweepindex+1))^2]);
             temp=reshape(permute(reshape(D{1}{sweepindex},sz1),[1,2,4,3]),[sz1(1)*sz1(2)*sz1(4),sz1(3)]);
             temp=reshape(permute(reshape(temp*temp',[sz1(1),sz1(2),sz1(4),sz1(1),sz1(2),sz1(4)]),[1,4,2,5,3,6]),[(sz1(1))^2*(sz1(2))^2,(sz1(4))^2]);
             W1=reshape(temp*down,[sz1(2),sz1(2),r(sweepindex+1),r(sweepindex+1)]);
             W1=reshape(permute(W1,[1,3,2,4]),[sz1(2)*r(sweepindex+1),sz1(2)*r(sweepindex+1)]);
-            % second lamda
+            % second lambda
             down=reshape(permute(reshape(Dp{2}{sweepindex},[sz2(4),r(sweepindex+1),sz2(4),r(sweepindex+1)]),[1,3,2,4]),[(sz2(4))^2,(r(sweepindex+1))^2]);
             temp=reshape(permute(reshape(D{2}{sweepindex},sz2),[1,2,4,3]),[sz2(1)*sz2(2)*sz2(4),sz2(3)]);
             temp=reshape(permute(reshape(temp*temp',[sz2(1),sz2(2),sz2(4),sz2(1),sz2(2),sz2(4)]),[1,4,2,5,3,6]),[(sz2(1))^2*(sz2(2))^2,(sz2(4))^2]);
             W2=reshape(temp*down,[sz2(2),sz2(2),r(sweepindex+1),r(sweepindex+1)]);
             W2=reshape(permute(W2,[1,3,2,4]),[sz2(2)*r(sweepindex+1),sz2(2)*r(sweepindex+1)]);
         elseif sweepindex==d
-            % first lamda
+            % first lambda
             temp=reshape(permute(reshape(D{1}{sweepindex},sz1),[1,2,4,3]),[sz1(1)*sz1(2)*sz1(4),sz1(3)]);
             temp=reshape(permute(reshape(temp*temp',[sz1(1),sz1(2),sz1(4),sz1(1),sz1(2),sz1(4)]),[1,4,2,5,3,6]),[(sz1(1))^2,(sz1(2))^2*(sz1(4))^2]);
             up=reshape(permute(reshape(Dm{1}{sweepindex},[sz1(1),r(sweepindex),sz1(1),r(sweepindex)]),[2,4,1,3]),[(r(sweepindex))^2,(sz1(1))^2]);
             W1=reshape(up*temp,[r(sweepindex),r(sweepindex),sz1(2),sz1(2),r(sweepindex+1),r(sweepindex+1)]);
             W1=reshape(permute(W1,[1,3,5,2,4,6]),[r(sweepindex)*sz1(2)*r(sweepindex+1),r(sweepindex)*sz1(2)*r(sweepindex+1)]);
-            % second lamda
+            % second lambda
             temp=reshape(permute(reshape(D{2}{sweepindex},sz2),[1,2,4,3]),[sz2(1)*sz2(2)*sz2(4),sz2(3)]);
             temp=reshape(permute(reshape(temp*temp',[sz2(1),sz2(2),sz2(4),sz2(1),sz2(2),sz2(4)]),[1,4,2,5,3,6]),[(sz2(1))^2,(sz2(2))^2*(sz2(4))^2]);
             up=reshape(permute(reshape(Dm{2}{sweepindex},[sz2(1),r(sweepindex),sz2(1),r(sweepindex)]),[2,4,1,3]),[(r(sweepindex))^2,(sz2(1))^2]);
             W2=reshape(up*temp,[r(sweepindex),r(sweepindex),sz2(2),sz2(2),r(sweepindex+1),r(sweepindex+1)]);
             W2=reshape(permute(W2,[1,3,5,2,4,6]),[r(sweepindex)*sz2(2)*r(sweepindex+1),r(sweepindex)*sz2(2)*r(sweepindex+1)]);
         else
-            % first lamda
+            % first lambda
             down=reshape(permute(reshape(Dp{1}{sweepindex},[sz1(4),r(sweepindex+1),sz1(4),r(sweepindex+1)]),[1,3,2,4]),[(sz1(4))^2,(r(sweepindex+1))^2]);
             temp=reshape(permute(reshape(D{1}{sweepindex},sz1),[1,2,4,3]),[sz1(1)*sz1(2)*sz1(4),sz1(3)]);
             temp=reshape(permute(reshape(temp*temp',[sz1(1),sz1(2),sz1(4),sz1(1),sz1(2),sz1(4)]),[1,4,2,5,3,6]),[(sz1(1))^2,(sz1(2))^2*(sz1(4))^2]);
             up=reshape(permute(reshape(Dm{1}{sweepindex},[sz1(1),r(sweepindex),sz1(1),r(sweepindex)]),[2,4,1,3]),[(r(sweepindex))^2,(sz1(1))^2]);
             W1=reshape(reshape(up*temp,[(r(sweepindex))^2*(sz1(2))^2,(sz1(4))^2])*down,[r(sweepindex),r(sweepindex),sz1(2),sz1(2),r(sweepindex+1),r(sweepindex+1)]);
             W1=reshape(permute(W1,[1,3,5,2,4,6]),[r(sweepindex)*sz1(2)*r(sweepindex+1),r(sweepindex)*sz1(2)*r(sweepindex+1)]);
-            % second lamda
+            % second lambda
             down=reshape(permute(reshape(Dp{2}{sweepindex},[sz2(4),r(sweepindex+1),sz2(4),r(sweepindex+1)]),[1,3,2,4]),[(sz2(4))^2,(r(sweepindex+1))^2]);
             temp=reshape(permute(reshape(D{2}{sweepindex},sz2),[1,2,4,3]),[sz2(1)*sz2(2)*sz2(4),sz2(3)]);
             temp=reshape(permute(reshape(temp*temp',[sz2(1),sz2(2),sz2(4),sz2(1),sz2(2),sz2(4)]),[1,4,2,5,3,6]),[(sz2(1))^2,(sz2(2))^2*(sz2(4))^2]);
@@ -216,7 +216,7 @@ end
         if ltr
             % left-to-right sweep, generate left orthogonal cores and update vk1
             if sweepindex==1
-                g=pinv(A'*A+lamda(1)*W1'*W1+lamda(2)*W2'*W2)*(A'*y');
+                g=pinv(A'*A+lambda(1)*W1'*W1+lambda(2)*W2'*W2)*(A'*y');
                 [Q,R]=qr(reshape(g',[r(sweepindex)*(n(sweepindex)),r(sweepindex+1)])); 
                 TN.core{sweepindex}=reshape(Q(:,1:r(sweepindex+1)),[r(sweepindex),n(sweepindex),r(sweepindex+1)]);
                 TN.core{sweepindex+1}=reshape(R(1:r(sweepindex+1),:)*reshape(TN.core{sweepindex+1},[r(sweepindex+1),(n(sweepindex+1))*r(sweepindex+2)]),[r(sweepindex+1),n(sweepindex+1),r(sweepindex+2)]);
@@ -224,14 +224,14 @@ end
                 Vm{sweepindex+1}=reshape(Vm{sweepindex+1},[N,r(sweepindex)*r(sweepindex+1)]);                
             else
                 yhat=y(:,ind);
-                g=pinv(A'*A+lamda(1)*W1'*W1+lamda(2)*W2'*W2)*(A'*yhat(:));
+                g=pinv(A'*A+lambda(1)*W1'*W1+lambda(2)*W2'*W2)*(A'*yhat(:));
                 [Q,R]=qr(reshape(g,[r(sweepindex)*(n(sweepindex)),r(sweepindex+1)])); 
                 TN.core{sweepindex}=reshape(Q(:,1:r(sweepindex+1)),[r(sweepindex),n(sweepindex),r(sweepindex+1)]);
                 TN.core{sweepindex+1}=reshape(R(1:r(sweepindex+1),:)*reshape(TN.core{sweepindex+1},[r(sweepindex+1),(n(sweepindex+1))*r(sweepindex+2)]),[r(sweepindex+1),n(sweepindex+1),r(sweepindex+2)]);
                 Vm{sweepindex+1}=reshape(dotkron(Vm{sweepindex},u{sweepindex}),[N*l,r(sweepindex)*n(sweepindex)])*reshape(TN.core{sweepindex},[r(sweepindex)*n(sweepindex),r(sweepindex+1)]);                
                 Vm{sweepindex+1}=reshape(Vm{sweepindex+1},[N,l*r(sweepindex+1)]);
             end
-            % first lamda
+            % first lambda
             sz=size(D{1}{sweepindex});
             if length(sz)==3
                 sz=[sz,1];              
@@ -239,7 +239,7 @@ end
             Dm{1}{sweepindex+1}=reshape(permute(D{1}{sweepindex},[1,3,4,2]),[sz(1)*sz(3)*sz(4),sz(2)])*reshape(permute(TN.core{sweepindex},[2,1,3]),[n(sweepindex),r(sweepindex)*r(sweepindex+1)]);
             temp=reshape(permute(reshape(Dm{1}{sweepindex+1},[sz(1),sz(3),sz(4),r(sweepindex),r(sweepindex+1)]),[2,1,4,3,5]),[sz(3),sz(1)*r(sweepindex)*sz(4)*r(sweepindex+1)]);
             Dm{1}{sweepindex+1}=Dm{1}{sweepindex}(:)'*reshape(permute(reshape(temp'*temp,[sz(1)*r(sweepindex),sz(4)*r(sweepindex+1),sz(1)*r(sweepindex),sz(4)*r(sweepindex+1)]),[1,3,2,4]),[sz(1)*r(sweepindex)*sz(1)*r(sweepindex),sz(4)*r(sweepindex+1)*sz(4)*r(sweepindex+1)]);
-            % second lamda
+            % second lambda
             if sweepindex <= idf(2)-1
                 Dm{2}{sweepindex+1}=eye(r(sweepindex+1));                
             else
@@ -259,7 +259,7 @@ end
             TN.core{sweepindex}=reshape(Q(:,1:r(sweepindex))',[r(sweepindex),n(sweepindex),r(sweepindex+1)]);
             TN.core{sweepindex-1}=reshape(reshape(TN.core{sweepindex-1},[r(sweepindex-1)*(n(sweepindex-1)),r(sweepindex)])*R(1:r(sweepindex),:)',[r(sweepindex-1),n(sweepindex-1),r(sweepindex)]);
             Vp{sweepindex-1}=dotkron(Vp{sweepindex},u{sweepindex})*reshape(permute(TN.core{sweepindex},[3 2 1]),[r(sweepindex+1)*n(sweepindex),r(sweepindex)]); % N x r_{i-1}    
-            % first lamda
+            % first lambda
             if sweepindex >= idf(2)
                 Dp{1}{sweepindex-1}=eye(r(sweepindex));      
             elseif sweepindex == idf(2)-1
@@ -273,7 +273,7 @@ end
                 temp=reshape(permute(reshape(Dp{1}{sweepindex-1},[sz(1),sz(3),sz(4),r(sweepindex),r(sweepindex+1)]),[2,1,4,3,5]),[sz(3),sz(1)*r(sweepindex)*sz(4)*r(sweepindex+1)]);
                 Dp{1}{sweepindex-1}=reshape(permute(reshape(temp'*temp,[sz(1)*r(sweepindex),sz(4)*r(sweepindex+1),sz(1)*r(sweepindex),sz(4)*r(sweepindex+1)]),[1,3,2,4]),[sz(1)*r(sweepindex)*sz(1)*r(sweepindex),sz(4)*r(sweepindex+1)*sz(4)*r(sweepindex+1)])*Dp{1}{sweepindex}(:);
             end 
-            % second lamda
+            % second lambda
             if sweepindex == d
                 sz=size(D{2}{sweepindex});
                 Dp{2}{sweepindex-1}=reshape(permute(D{2}{sweepindex},[1,3,2]),[sz(1)*sz(3),sz(2)])*reshape(permute(TN.core{sweepindex},[2,1,3]),[n(sweepindex),r(sweepindex)*r(sweepindex+1)]);
