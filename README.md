@@ -35,7 +35,7 @@ Decompose a tensor into its tensor train form with TT-rank r in an opposite dire
 
 Tensor completion given the inputs, outputs, TT-ranks, and TT initialization with scalar outputs.
 
-* [TN,e]=tencom_TV(y,u,r,init,Kn,idf,lamda,varargin)
+* [TN,e]=tencom_TV(y,u,r,init,Kn,idf,lambda,varargin)
 
 Tensor completion given the inputs, outputs, TT-ranks, TT initialization, coordinate of known entries, dimensions identifier, and TV term parameter lambda with scalar outputs.
 
@@ -43,7 +43,7 @@ Tensor completion given the inputs, outputs, TT-ranks, TT initialization, coordi
 
 Tensor completion given the inputs, outputs, TT-ranks, and TT initialization with vector outputs.
 
-* [TN,e]=VecOtencom_TV(y,u,r,init,Kn,idf,lamda,varargin)
+* [TN,e]=VecOtencom_TV(y,u,r,init,Kn,idf,lambda,varargin)
 
 Tensor completion given the inputs, outputs, TT-ranks, TT initialization,  coordinate of known entries, dimensions identifier, and TV term parameter lambda with vector outputs.
 
