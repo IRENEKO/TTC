@@ -1,7 +1,7 @@
 %% Experiment 1
 clear all
 close all
-cd data
+% cd data
 load 1.mat
 
 % Tunning parameters
@@ -16,7 +16,7 @@ para.idf=[1,4,7];           % (For TV term) the identifier of the start of origi
 
 para.mi=mi;
 para.kn=kn;
-para.Mi=mi;
+para.Mi=Mi;
 para.Kn=Kn;
 
 version=1;   % version=1: TTC; version=2: TTV-TV

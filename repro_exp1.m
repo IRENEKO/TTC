@@ -11,7 +11,7 @@ Rd=para.Rd;
 n=para.n;   
 mi=para.mi;
 kn=para.kn;
-Mi=para.mi;
+Mi=para.Mi;
 Kn=para.Kn;
 
 szo=size(data);
