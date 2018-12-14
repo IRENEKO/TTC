@@ -38,7 +38,7 @@ else
     MAXITR=2+1;
 end
 
-fa=2;
+fa=1;
 
 for i=1:d
     TN.core{i}=init{i}.core;
