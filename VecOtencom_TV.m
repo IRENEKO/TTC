@@ -94,7 +94,7 @@ for i=d:-1:2
 end
 
 % for first lambda term 
-% Dm and Dp are dofferent from Vm and Vp because they're already ans'*ans
+% Dm and Dp are different from Vm and Vp because they're already ans'*ans
 for j=d:-1:idf(2)
     Dp{1}{j-1}=eye(r(j));
 end
