@@ -75,7 +75,7 @@ for j=d:-1:2
 end
 
 % for first lamda term 
-% Dm and Dp are dofferent from Vm and Vp because they're already ans'*ans
+% Dm and Dp are different from Vm and Vp because they're already ans'*ans
 for j=d:-1:idf(2)
     Dp{1}{j-1}=eye(r(j));
 end
@@ -117,9 +117,7 @@ itr=1;                          % counts number of iterations
 ltr=1;                          % flag that checks whether we sweep left to right
 sweepindex=1;                   % index that indicates which TT core will be updated
 
-% temp=contract(TN);
-% temp=temp(:);
-% e(itr)=norm(y-temp(Kn))/norm(y);
+
 while itr<2 ||  (itr < MAXITR )
     updateTT;
     updatesweep;
