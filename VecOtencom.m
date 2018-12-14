@@ -1,5 +1,5 @@
-function TN=VecOtencom(y,u,r,init,varargin)
-% TN=tencom(y,u,r,init,varargin)
+function [TN,e]=VecOtencom(y,u,r,init,varargin)
+% [TN,e]=tencom(y,u,r,init,varargin)
 % -------------
 % Tensor completion given the inputs, outputs, TT-ranks, and TT
 % initialization with vector outputs
@@ -15,7 +15,7 @@ function TN=VecOtencom(y,u,r,init,varargin)
 % Reference
 % ---------
 %
-% Fast and Accurate Tensor Completion with Tensor Trains: A System Identification Approach
+% Fast and Accurate Tensor Completion with Total Variation Regularized Tensor Trains
 
 % 2018, Ching-Yun KO
 
@@ -32,7 +32,7 @@ MAXITR=3;
 if ~isempty(varargin)
     fa=varargin{1};
 else
-    fa=1;;
+    fa=1;
 end
 
 
@@ -56,6 +56,9 @@ for i=d:-1:2
     Vp{i-1}=dotkron(Vp{i},u{i})*reshape(permute(TN.core{i},[3 2 1]),[r(i+1)*n(i),r(i)]); 
 end
 
+% yhat=MOsim_tencom(u,TN);
+% yhat=reshape(yhat',[N*l,1]);
+% e(1)=norm(y(:)-yhat(:))/norm(y(:));
 
 itr=1;                          % counts number of iterations
 ltr=1;                          % flag that checks whether we sweep left to right
@@ -68,6 +71,9 @@ while itr<2 ||  (itr < MAXITR )
     % only check residual after 1 half sweep
     if (sweepindex==d) || (sweepindex==1) % half a sweep
         itr=itr+1;
+%         yhat=MOsim_tencom(u,TN);
+%         yhat=reshape(yhat',[N*l,1]);
+%         e(itr)=norm(y(:)-yhat(:))/norm(y(:));
     end    
 end  
 

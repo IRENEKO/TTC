@@ -22,7 +22,7 @@ function [TN,e]=VecOtencom_TV(y,u,r,init,Kn,idf,lambda,varargin)
 % Reference
 % ---------
 %
-% Fast and Accurate Tensor Completion with Tensor Trains: A System Identification Approach
+% Fast and Accurate Tensor Completion with Total Variation Regularized Tensor Trains
 
 % 2018, Ching-Yun KO
 N=size(u{1},1);
@@ -38,7 +38,7 @@ MAXITR=3;
 if ~isempty(varargin)
     fa=varargin{1};
 else
-    fa=1;;
+    fa=1;
 end
 
 
@@ -140,10 +140,12 @@ while itr<2 ||  (itr < MAXITR )
     % only check residual after 1 half sweep
     if (sweepindex==d) || (sweepindex==1) % half a sweep
         itr=itr+1;
-        temp=contract(TN);
-        temp=temp(:);
-        e(itr)=norm(y(:)-temp(Kn))/norm(y(:));
-        lambda=lambda*e(itr);
+        if itr==2
+            temp=contract(TN);
+            temp=temp(:);
+            e(itr)=norm(y(:)-temp(Kn))/norm(y(:));
+            lambda=lambda*e(itr);
+        end
     end    
 end  
 
@@ -155,7 +157,6 @@ end
             ind=randperm(N);
             ind=ind(1:floor(N/l*fa));
             Nn=length(ind);
-               
             A=dotkron(Vm{sweepindex}(ind,:),u{sweepindex}(ind,:),Vp{sweepindex}(ind,:));
             A=reshape(A,[Nn,l,r(sweepindex)*n(sweepindex)*r(sweepindex+1)]);
             A=permute(A,[2 1 3]);
@@ -254,7 +255,7 @@ end
         else
             % right-to-left sweep, generate right orthogonal cores and update vk2
             yhat=y(:,ind);
-            g=pinv(A'*A)*(A'*yhat(:)); 
+            g=pinv(A'*A+lambda(1)*W1'*W1+lambda(2)*W2'*W2)*(A'*yhat(:));
             [Q,R]=qr(reshape(g,[r(sweepindex),(n(sweepindex))*r(sweepindex+1)])'); 
             TN.core{sweepindex}=reshape(Q(:,1:r(sweepindex))',[r(sweepindex),n(sweepindex),r(sweepindex+1)]);
             TN.core{sweepindex-1}=reshape(reshape(TN.core{sweepindex-1},[r(sweepindex-1)*(n(sweepindex-1)),r(sweepindex)])*R(1:r(sweepindex),:)',[r(sweepindex-1),n(sweepindex-1),r(sweepindex)]);
