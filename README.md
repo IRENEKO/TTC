@@ -1,7 +1,7 @@
-Fast and Accurate Tensor Completion with Tensor Trains: A System Identification Approach (TTC) for Matlab&copy;/Octave&copy;
+Fast and Accurate Tensor Completion with Total Variation Regularized Tensor Trains (TTC) for Matlab&copy;/Octave&copy;
 --------------------------------------------------------------------------------------------------
 
-This package contains Matlab/Octave code for tensor completion using tensor trains with a system identification approach (TTC).
+This package contains Matlab/Octave code for tensor completion using tensor trains with Total Variation Regularization (TTC).
 
 
 1. Functions
@@ -49,7 +49,7 @@ Tensor completion given the inputs, outputs, TT-ranks, TT initialization,  coord
 
 2. Reference
 ------------
-"Fast and Accurate Tensor Completion with Tensor Trains: A System Identification Approach"
+"Fast and Accurate Tensor Completion with Total Variation Regularized Tensor Trains"
 
 Authors: Ching-Yun Ko, Kim Batselier, Wenjian Yu, Ngai Wong
 
